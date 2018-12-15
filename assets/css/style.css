@@ -1,5 +1,72 @@
 body {
+    background-color: black;
     margin: 0px auto;
-    margin-top: 20%;
     text-align: center;
+    margin-top: 30px;
+    color: white;
+}
+
+
+
+#header-title {
+    font-size: 60px;
+    font-weight: bold;
+    border: 2px solid white;
+    width: 550px;
+    margin: 0px auto;
+}
+
+#game-score{
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid white;
+    width: 550px;
+    margin: 0px auto;
+    margin-top: 20px;
+    height: 30px;
+}
+
+#correct {
+    float: left;
+}
+
+#incorrect {
+    float: right;
+}
+
+#question-timer {
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid white;
+    width: 550px;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+#question-element {
+    font-size: 30px;
+    font-weight: bold;
+    border: 2px solid white;
+    width: 550px;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+#answer-area {
+    padding: 20px;
+    font-size: 30px;
+    font-weight: normal;
+    border: 2px solid white;
+    width: 260px;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+#button-area {
+    font-size: 30px;
+    font-weight: normal;
+    border: 2px solid white;
+    width: 550px;
+    margin: 0px auto;
+    margin-top: 20px;
 }

@@ -72,6 +72,11 @@ $("document").ready(function() {
     var skipButtonEnabled = false;
     var resetButtonEnabled = false;
 
+    var countdownEnabled = false;
+    var countdownTimer;
+    const maxTime = 20;
+    var timeRemaining = maxTime;
+
     var questionCounter = 0;
     var questionsCorrect = 0;
     var questionsIncorrect = 0;
@@ -107,6 +112,7 @@ $("document").ready(function() {
     function checkAnswer() {
         if (questionCounter < triviaQuestions.length) {
             if (radioButtonSelected === triviaQuestions[(questionCounter - 1)].correctAnswer) {
+                stopTimer();
                 alert("You got it right!");
                 questionsCorrect++;
                 $("#correct").html("Correct: " + questionsCorrect);
@@ -114,6 +120,7 @@ $("document").ready(function() {
                 loadQuestion();
             }
             else {
+                stopTimer();
                 alert("You got it wrong! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
                 questionsIncorrect++;
                 $("#incorrect").html("Incorrect: " + questionsIncorrect);
@@ -123,6 +130,7 @@ $("document").ready(function() {
         }
         else if (questionCounter === triviaQuestions.length) {
             if (radioButtonSelected === triviaQuestions[(questionCounter - 1)].correctAnswer) {
+                stopTimer();
                 alert("You got it right!");
                 questionsCorrect++;
                 $("#correct").html("Correct: " + questionsCorrect);
@@ -131,6 +139,7 @@ $("document").ready(function() {
                 resetGame();
             }
             else {
+                stopTimer();
                 alert("You got it wrong! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
                 questionsIncorrect++;
                 $("#incorrect").html("Incorrect: " + questionsIncorrect);
@@ -148,10 +157,47 @@ $("document").ready(function() {
             var incorrectAnswerToQuestion = triviaQuestions[questionCounter].incorrectAnswers[i];
             $("#answer-area").append("<input type='radio' name='current-question-choice' value=" + incorrectAnswerToQuestion + " id='answer-" + i + "'>" + "<label for=" + incorrectAnswerToQuestion + ">" + incorrectAnswerToQuestion + "</label><br>");
         };
+        countdownEnabled = false;
+        startTimer();
         $("input[type=radio][name=current-question-choice]").on("change", function() {
             radioButtonSelected = $(this).attr("value");
             checkAnswer();
         });
+    }
+
+    function startTimer() {
+        if (countdownEnabled === false) {
+            countdownTimer = setInterval(subtractTime, 1000);
+            countdownEnabled = true;
+        }
+    }
+
+    function subtractTime() {
+        timeRemaining--;
+        $("#question-timer").html("Time Remaining: " + timeRemaining + " seconds.");
+        if (timeRemaining === 0) {
+            stopTimer();
+            countdownEnabled = false;
+            timeRemaining = maxTime;
+            alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
+            questionsIncorrect++;
+            $("#incorrect").html("Incorrect: " + questionsIncorrect);
+            clearGameSpace();
+            loadQuestion();
+            }
+        else if ((timeRemaining === 0) && (questionCounter === triviaQuestions.length)) {
+            alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
+            $("#incorrect").html("Incorrect: " + questionsIncorrect);
+            clearGameSpace();
+            calculateScore();
+            resetGame();
+            }
+        }
+
+    function stopTimer() {
+        clearInterval(countdownTimer);
+        countdownEnabled = false;
+        timeRemaining = maxTime;
     }
 
     function clearGameSpace() {
@@ -167,6 +213,7 @@ $("document").ready(function() {
         resetButtonEnabled = false;
         gameStarted = false;
         questionCounter = 0;
+        stopTimer();
     }
 
     function calculateScore() {
@@ -192,30 +239,37 @@ $("document").ready(function() {
         if (gameStarted === false) {
             resetGame();
             gameStarted = true;
+            skipButtonEnabled = true;
+            resetButtonEnabled = true;
             gameLogic();
         }
     });
     $("#skip-button").on("click", function() {
-        if (questionCounter < triviaQuestions.length) {
-            alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
-            questionsIncorrect++;
-            $("#incorrect").html("Incorrect: " + questionsIncorrect);
-            clearGameSpace();
-            loadQuestion();
-        }
-        else if (questionCounter === triviaQuestions.length) {
-            alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
-            $("#incorrect").html("Incorrect: " + questionsIncorrect);
-            clearGameSpace();
-            calculateScore();
-            resetGame();
+        if(skipButtonEnabled === true) {
+            if (questionCounter < triviaQuestions.length) {
+                alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
+                questionsIncorrect++;
+                $("#incorrect").html("Incorrect: " + questionsIncorrect);
+                clearGameSpace();
+                stopTimer();
+                loadQuestion();
+            }
+            else if (questionCounter === triviaQuestions.length) {
+                alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
+                $("#incorrect").html("Incorrect: " + questionsIncorrect);
+                clearGameSpace();
+                stopTimer();
+                calculateScore();
+                resetGame();
+            }
         }
     });
     $("#reset-button").on("click", function() {
-        resetGame();
+        if (resetButtonEnabled === true) {
+            resetGame();
         clearGameSpace();
         $("#correct").html("");
         $("#incorrect").html("");
-    });
-        
+        }
+    });     
 });
