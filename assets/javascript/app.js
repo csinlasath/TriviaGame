@@ -81,6 +81,22 @@ $("document").ready(function() {
     var questionsCorrect = 0;
     var questionsIncorrect = 0;
 
+    function createGameElements() {
+        var gameElement = $("#game");
+        $("header").append($("<h1 id='header-title'>"));
+        gameElement.append("<section id='question-element'>");
+        $("#question-element").text("Arcade Edition");
+        gameElement.append("<section id='game-score'>");
+        $("#game-score").text("Game Score: -");
+        gameElement.append("<section id='question-timer'>");
+        $("#question-timer").text("Time Remaining: -");
+        gameElement.append("<section id='answer-area'>");
+        $("#answer-area").text("Click Start Button to Begin the Game");
+        gameElement.append("<section id='results'>");
+        gameElement.append("<section id='button-area'>");
+        $("#header-title").html("Trivia Game");
+    }
+
     //Sets Up The Page
     function createButtons() {
         for (var i = 0; i < gameButtons.length; i++) {
@@ -95,8 +111,10 @@ $("document").ready(function() {
 
     //Game Logic
     function gameLogic() {
-        $("#game-score").append("<div id='correct'></div>");
-        $("#game-score").append("<div id='incorrect'></div>");
+        $("#question-element").html("");
+        $("#game-score").html("");
+        $("#game-score").append("<div id='correct'>Correct: 0</div>");
+        $("#game-score").append("<div id='incorrect'>Incorrect: 0</div>");
         loadQuestion();
     }
 
@@ -135,6 +153,9 @@ $("document").ready(function() {
                 questionsCorrect++;
                 $("#correct").html("Correct: " + questionsCorrect);
                 clearGameSpace();
+                $("#answer-area").html("Click Reset Button to Reset the Game.");
+                $("#question-timer").text("Time Remaining: -");
+                $("#question-element").text("Arcade Edition");
                 calculateScore();
                 resetGame();
             }
@@ -144,6 +165,9 @@ $("document").ready(function() {
                 questionsIncorrect++;
                 $("#incorrect").html("Incorrect: " + questionsIncorrect);
                 clearGameSpace();
+                $("#answer-area").html("Click Reset Button to Reset the Game.");
+                $("#question-timer").text("Time Remaining: -");
+                $("#question-element").text("Arcade Edition");
                 calculateScore();
                 resetGame();
             }
@@ -183,14 +207,23 @@ $("document").ready(function() {
             questionsIncorrect++;
             $("#incorrect").html("Incorrect: " + questionsIncorrect);
             clearGameSpace();
-            loadQuestion();
+            if (questionCounter < triviaQuestions.length) {
+                loadQuestion();
             }
+        }
         else if ((timeRemaining === 0) && (questionCounter === triviaQuestions.length)) {
+            stopTimer();
+            countdownEnabled = false;
+            timeRemaining = maxTime;
             alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
             $("#incorrect").html("Incorrect: " + questionsIncorrect);
+            skipButtonEnabled = false;
             clearGameSpace();
             calculateScore();
             resetGame();
+            $("#answer-area").html("Click Reset Button to Reset the Game.");
+            $("#question-timer").text("Time Remaining: -");
+            $("#question-element").text("Arcade Edition");
             }
         }
 
@@ -214,6 +247,7 @@ $("document").ready(function() {
         gameStarted = false;
         questionCounter = 0;
         stopTimer();
+        $("#answer-area").html("");
     }
 
     function calculateScore() {
@@ -231,7 +265,7 @@ $("document").ready(function() {
     }
 
     //When the page Loads (Interface)
-    $("#header-title").html("Trivia Game");
+    createGameElements();
     createButtons();
 
     //Interactivity
@@ -245,6 +279,17 @@ $("document").ready(function() {
         }
     });
     $("#skip-button").on("click", function() {
+        if (questionCounter === triviaQuestions.length) {
+            alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
+                $("#incorrect").html("Incorrect: " + questionsIncorrect);
+                clearGameSpace();
+                $("#answer-area").html("Click Reset Button to Reset the Game.");
+                $("#question-timer").text("Time Remaining: -");
+                $("#question-element").text("Arcade Edition");
+                stopTimer();
+                calculateScore();
+                resetGame();
+        }
         if(skipButtonEnabled === true) {
             if (questionCounter < triviaQuestions.length) {
                 alert("You should of guessed! The correct answer was: " + triviaQuestions[(questionCounter - 1)].correctAnswer);
@@ -270,6 +315,10 @@ $("document").ready(function() {
         clearGameSpace();
         $("#correct").html("");
         $("#incorrect").html("");
+        $("#answer-area").html("Click Start Button to Begin the Quiz");
+        $("#question-timer").text("Time Remaining: -");
+        $("#question-element").text("Arcade Edition");
+        $("#game-score").text("Game Score: -");
         }
     });     
 });

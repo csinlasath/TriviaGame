@@ -2,7 +2,6 @@ body {
     background-color: black;
     margin: 0px auto;
     text-align: center;
-    margin-top: 30px;
     color: white;
 }
 
@@ -17,39 +16,46 @@ body {
 }
 
 #game-score{
-    font-size: 20px;
-    font-weight: bold;
+    padding: 20px;
+    font-size: 30px;
+    font-weight: normal;
     border: 2px solid white;
-    width: 550px;
+    width: 510px;
+    height: 40px;
     margin: 0px auto;
-    margin-top: 20px;
-    height: 30px;
+    margin-top: 5px;
 }
 
 #correct {
     float: left;
+    margin-left: 75px;
 }
 
 #incorrect {
     float: right;
+    margin-right: 75px;
 }
 
 #question-timer {
-    font-size: 20px;
-    font-weight: bold;
+    padding: 20px;
+    font-size: 30px;
+    font-weight: normal;
     border: 2px solid white;
-    width: 550px;
+    width: 510px;
+    height: 40px;
     margin: 0px auto;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 #question-element {
+    padding: 20px;
     font-size: 30px;
-    font-weight: bold;
+    font-weight: normal;
     border: 2px solid white;
-    width: 550px;
+    width: 510px;
+    height: 70px;
     margin: 0px auto;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 #answer-area {
@@ -57,16 +63,29 @@ body {
     font-size: 30px;
     font-weight: normal;
     border: 2px solid white;
-    width: 260px;
+    width: 510px;
+    height: 120px;
     margin: 0px auto;
-    margin-top: 20px;
+    margin-top: 5px;
+    text-align: center;
 }
 
 #button-area {
+    padding: 20px;
     font-size: 30px;
     font-weight: normal;
     border: 2px solid white;
-    width: 550px;
+    width: 510px;
+    height: 40px;
     margin: 0px auto;
-    margin-top: 20px;
+    margin-top: 5px;
+}
+
+button {
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
 }
