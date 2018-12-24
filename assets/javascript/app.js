@@ -6,61 +6,71 @@ $("document").ready(function() {
     triviaQuestions[0] = {
         displayQuestion : "What year was Galaga released?",
         correctAnswer : "1981",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["1981", "1983", "1978", "1985"]
     };
 
     triviaQuestions[1] = {
         displayQuestion : "What year was Centipede released?",
         correctAnswer : "1981",
-        incorrectAnswers : ["1978", "1978", "1985"]
+        incorrectAnswers : ["1978", "1978", "1985"],
+        allAnswers: ["1980", "1985", "1978", "1981"]
     };
 
     triviaQuestions[2] = {
         displayQuestion : "What year was Pac-Man released?",
         correctAnswer : "1980",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["1984", "1981", "1980", "1985"]
     };
 
     triviaQuestions[3] = {
         displayQuestion : "What year was Street Fighter released?",
         correctAnswer : "1994",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["1994", "1990", "1978", "1985"]
     };
 
     triviaQuestions[4] = {
         displayQuestion : "What year was Mortal Kombat released?",
         correctAnswer : "1992",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["1991", "1990", "1992", "1994"]
     };
 
     triviaQuestions[5] = {
         displayQuestion : "What year was Rampage released?",
         correctAnswer : "1986",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["1986", "1990", "1989", "1985"]
     };
 
     triviaQuestions[6] = {
         displayQuestion : "What year was Asteroids released?",
         correctAnswer : "1979",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["1979", "1980", "1978", "1982"]
     };
 
     triviaQuestions[7] = {
         displayQuestion : "What year was Tempest released?",
         correctAnswer : "1981",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["1979", "1983", "1978", "1981"]
     };
 
     triviaQuestions[8] = {
         displayQuestion : "What year was Donkey Kong released?",
         correctAnswer : "1981",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["1985", "1981", "1984", "1986"]
     };
 
     triviaQuestions[9] = {
         displayQuestion : "What year was Dance Dance Revolution(DDR) released?",
         correctAnswer : "1998",
-        incorrectAnswers : ["1990", "1978", "1985"]
+        incorrectAnswers : ["1990", "1978", "1985"],
+        allAnswers: ["2002", "1997", "1998", "2000"]
     };
 
     //Variables for Game
@@ -81,6 +91,7 @@ $("document").ready(function() {
     var questionsCorrect = 0;
     var questionsIncorrect = 0;
 
+    //Sets Up The Page
     function createGameElements() {
         var gameElement = $("#game");
         $("header").append($("<h1 id='header-title'>"));
@@ -97,7 +108,6 @@ $("document").ready(function() {
         $("#header-title").html("Trivia Game");
     }
 
-    //Sets Up The Page
     function createButtons() {
         for (var i = 0; i < gameButtons.length; i++) {
             var playerButton = $("<button>");
@@ -109,7 +119,6 @@ $("document").ready(function() {
         }
     }
 
-    //Game Logic
     function gameLogic() {
         $("#question-element").html("");
         $("#game-score").html("");
@@ -118,6 +127,7 @@ $("document").ready(function() {
         loadQuestion();
     }
 
+    //This is what makes the game work
     function loadQuestion() {
         $("#question-element").append($("<div id='current-question'></div>"));
         $("#current-question").append("Question #" + (questionCounter + 1) + ": <br>");
@@ -175,12 +185,11 @@ $("document").ready(function() {
     }
 
     function loadAnswers() {
-        var correctAnswerToQuestion = triviaQuestions[questionCounter].correctAnswer;
-        $("#answer-area").append("<input type='radio' name='current-question-choice' value=" + correctAnswerToQuestion + " id='answer-" + questionCounter + "'>" + "<label for=" + correctAnswerToQuestion + ">" + correctAnswerToQuestion + "</label><br>");
-        for (var i = 0; i < triviaQuestions[questionCounter].incorrectAnswers.length; i++) {
-            var incorrectAnswerToQuestion = triviaQuestions[questionCounter].incorrectAnswers[i];
-            $("#answer-area").append("<input type='radio' name='current-question-choice' value=" + incorrectAnswerToQuestion + " id='answer-" + i + "'>" + "<label for=" + incorrectAnswerToQuestion + ">" + incorrectAnswerToQuestion + "</label><br>");
-        };
+        for (var i = 0; i < triviaQuestions[questionCounter].allAnswers.length; i++) {
+            var answerToQuestion = triviaQuestions[questionCounter].allAnswers[i];
+
+            $("#answer-area").append("<input type='radio' name='current-question-choice' value='" + answerToQuestion + "' id='" + i + "-answer-" + answerToQuestion + "'><label for='" + answerToQuestion + "'>" + answerToQuestion + "</label><br>");
+        }
         countdownEnabled = false;
         startTimer();
         $("input[type=radio][name=current-question-choice]").on("change", function() {
@@ -253,13 +262,15 @@ $("document").ready(function() {
     function calculateScore() {
         var scorePercentage = 0;
         scorePercentage = questionsCorrect / triviaQuestions.length;
-        scorePercentage.split(".");
-        $("#results").append("You scored a " + scorePercentage + "0%!");
-        if (scorePercentage > .8) {
-            alert("You know your stuff!");
+        console.log(scorePercentage);
+        if (scorePercentage >= .7) {
+            alert("You scored a " + scorePercentage.toString().replace("0.", "") + "0%.  You know your stuff!")
+        }
+        else if (scorePercentage < .7) {
+            alert("You scored a " + scorePercentage.toString().replace("0.", "") + "0%.  Better luck next time.")
         }
         else if (scorePercentage === 1) {
-            alert("You are a arcade machine!");
+            alert("You scored a 100%.  You are a arcade machine...literally!!!");
         }
 
     }
